@@ -1,28 +1,111 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<div id="app">
+  <h1>Got some shit to do, Lazy.</h1>
+  <ul>
+    <li v-for="(todo, index) in tasks"
+    :key="index" :class="todo.highPriority ?
+    'high-priority' : 'low-priority'">
+      <span>{{todo.task}}</span>
+      <span v-if="todo.highPriority">DO IT NOW!</span>
+    </li>
+  </ul>
+
+<form v-on:submit.prevent="saveNewTask">
+    <label for="new-task">More shit to do:</label>
+    <input type="text" id="new-task" v-model="newTask">
+        <input type="radio" name= "priority" id="high-priority" value="high" for ="high" v-on:click="handleClick(index)">High</input>
+        <input type="radio" name = "priority" id="low-priority" value="low" for="low" checked>Low</input>
+    <button type="submit" value="save-new-task">Add it</button>
+</form>
+</div>
+  
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    data() {
+        return {
+            tasks: [
+                {task: "Take the bins out", highPriority: false},
+                {task: "Brush the cat", highPriority: false},
+                {task: "stroke the hedgehog", highPriority: false}
+            ],
+          newTask: ""
+        }
+    },
+
+  methods:  {
+    saveNewTask: function () {
+      this.tasks.push({
+        task: this.newTask, 
+        isDone: false
+      }),
+    this.newTask = "";
+    },
+  
+    handleClick: function(index) {
+        this.tasks.[index].highPriority = true;
+    }
+  }  
 }
+
 </script>
+
+
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 60%;
+  margin: 0 auto;
+  font-family: 'Lato', sans-serif;
 }
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  margin: 20px 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+li span {
+  padding: 8px;
+}
+
+li button {
+  background: #f2360c;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+li.low-priority {
+  border: 2px solid #1a681e;
+  color: #1a681e;
+}
+
+li.high-priority {
+  border: 2px solid #f2360c;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 50%;
+  margin:5px;
+}
+
+button, input[type="submit"]{
+  padding: 10px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid #000;
+}
+
 </style>
