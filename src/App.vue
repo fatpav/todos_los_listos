@@ -3,18 +3,17 @@
   <h1>Got some shit to do, Lazy.</h1>
   <ul>
     <li v-for="(todo, index) in tasks"
-    :key="index" :class="todo.highPriority ?
-    'high-priority' : 'low-priority'">
-      <span>{{todo.task}}</span>
-      <span v-if="todo.highPriority">DO IT NOW!</span>
+    v-bind:key="index" :class="todo.priority">
+      <span>{{ todo.task }}</span>
+      <!-- <span v-if="todo.highPriority">DO IT NOW!</span> -->
     </li>
   </ul>
 
 <form v-on:submit.prevent="saveNewTask">
     <label for="new-task">More shit to do:</label>
-    <input type="text" id="new-task" v-model="newTask">
-        <input type="radio" name= "priority" id="high-priority" value="high" for ="high" v-on:click="handleClick(index)">High</input>
-        <input type="radio" name = "priority" id="low-priority" value="low" for="low" checked>Low</input>
+    <input type="text" id="new-task" v-model="newTask.task">
+        <input type="radio" name= "priority" id="high-priority" value="high-priority" for ="high" v-model="newTask.priority">High</input>
+        <input type="radio" name = "priority" id="low-priority" value="low-priority" for="low" v-model="newTask.priority" checked>Low</input>
     <button type="submit" value="save-new-task">Add it</button>
 </form>
 </div>
@@ -25,26 +24,28 @@
 export default {
     data() {
         return {
-            tasks: [
-                {task: "Take the bins out", highPriority: false},
-                {task: "Brush the cat", highPriority: false},
-                {task: "stroke the hedgehog", highPriority: false}
-            ],
-          newTask: ""
+            tasks: [],
+          newTask: {
+            task:"",
+            priority:""
+          }
         }
     },
 
   methods:  {
     saveNewTask: function () {
       this.tasks.push({
-        task: this.newTask, 
-        isDone: false
+        task: this.newTask.task, 
+        priority: this.newTask.priority
       }),
-    this.newTask = "";
+    this.newTask = {
+      task: "",
+      priority: ""
+    };
     },
   
     handleClick: function(index) {
-        this.tasks.[index].highPriority = true;
+        this.tasks[index].highPriority = true;
     }
   }  
 }
